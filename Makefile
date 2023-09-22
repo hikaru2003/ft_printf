@@ -1,21 +1,34 @@
 NAME = libftprintf.a
-SRCS	=	./ft_printf.c		\
-			./ft_print_conv.c	\
-			./ft_put.c			\
-			./ft_strlen.c		\
-			./to_hexa.c			\
 
-OBJS = $(SRCS:%.c=%.o)
+SRCS	=	ft_printf.c		\
+			ft_print_conv.c	\
+			ft_put.c		\
+			ft_strlen.c		\
+			to_hexa.c		\
+
+INCLUDE_DIR = include
+SRCDIR = ./srcs/
+OBJDIR = ./obj/
+
+OBJS = $(SRCS:%.c=$(OBJDIR)%.o)
+
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
 
-all: $(NAME)
+CFLAGS = -Wall -Wextra -Werror -I $(INCLUDE_DIR)
 
-$(NAME): $(OBJS)
-	ar rc $(NAME) $(OBJS)
+all: $(OBJDIR) $(NAME)
+
+$(NAME): $(OBJDIR) $(OBJS)
+	ar rcs $(NAME) $(OBJS)
+
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)%.o: $(SRCDIR)%.c
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(OBJS)
+	rm -rf $(OBJDIR)
 
 fclean: clean
 	rm -f $(NAME)
